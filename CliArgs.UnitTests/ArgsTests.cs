@@ -38,4 +38,14 @@ public class ArgsTests
         Assert.Equal(ErrorCode.UnexpectedArgument, ex.ErrorCode);
         Assert.Equal('y', ex.ErrorArgumentId);
     }
+
+    [Fact]
+    public void Create_NonLetterSchema_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("*", Array.Empty<string>()));
+        
+        Assert.Equal(ErrorCode.InvalidArgumentName, ex.ErrorCode);
+        Assert.Equal('*', ex.ErrorArgumentId);
+    }
 }

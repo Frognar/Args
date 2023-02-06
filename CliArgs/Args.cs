@@ -9,6 +9,8 @@ public class Args
     
     public Args(string schema, string[] args)
     {
+        if (schema.Length > 0)
+            throw new ArgsException(ErrorCode.InvalidArgumentName, '*');
         if (args.Length > 0)
             throw new ArgsException(ErrorCode.UnexpectedArgument, args[0][1]);
     }
