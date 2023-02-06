@@ -10,7 +10,13 @@ public class Args
     public Args(string schema, string[] args)
     {
         if (schema.Length > 0)
-            throw new ArgsException(ErrorCode.InvalidArgumentName, '*');
+        {
+            char elementId = schema[0];
+            if (char.IsLetter(elementId) == false)
+                throw new ArgsException(ErrorCode.InvalidArgumentName, elementId);
+
+            throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
+        }
         if (args.Length > 0)
             throw new ArgsException(ErrorCode.UnexpectedArgument, args[0][1]);
     }

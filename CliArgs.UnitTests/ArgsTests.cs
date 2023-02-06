@@ -48,4 +48,14 @@ public class ArgsTests
         Assert.Equal(ErrorCode.InvalidArgumentName, ex.ErrorCode);
         Assert.Equal('*', ex.ErrorArgumentId);
     }
+
+    [Fact]
+    public void Create_InvalidArgumentFormat_ShouldThrowException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("f~", Array.Empty<string>()));
+        
+        Assert.Equal(ErrorCode.InvalidArgumentFormat, ex.ErrorCode);
+        Assert.Equal('f', ex.ErrorArgumentId);
+    }
 }
