@@ -26,5 +26,6 @@ public class ArgsTests
             () => new Args("", new[] { "-x" }));
         
         Assert.Equal(ErrorCode.UnexpectedArgument, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
     }
 }

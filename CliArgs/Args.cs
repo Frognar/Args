@@ -10,6 +10,6 @@ public class Args
     public Args(string schema, string[] args)
     {
         if (args.Length > 0)
-            throw new ArgsException(ErrorCode.UnexpectedArgument);
+            throw new ArgsException(ErrorCode.UnexpectedArgument, 'x');
     }
 }
