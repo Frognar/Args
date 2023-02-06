@@ -20,12 +20,22 @@ public class ArgsTests
     }
 
     [Fact]
-    public void Create_WithoutSchemaButWithOneArgument_ShouldHaveThrown()
+    public void Create_WithoutSchemaButWithOneArgument_ShouldThrowArgsException()
     {
         ArgsException ex = Assert.Throws<ArgsException>(
             () => new Args("", new[] { "-x" }));
         
         Assert.Equal(ErrorCode.UnexpectedArgument, ex.ErrorCode);
         Assert.Equal('x', ex.ErrorArgumentId);
+    }
+
+    [Fact]
+    public void Create_WithoutSchemaButWithMultipleArguments_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("", new[] { "-y", "-x" }));
+        
+        Assert.Equal(ErrorCode.UnexpectedArgument, ex.ErrorCode);
+        Assert.Equal('y', ex.ErrorArgumentId);
     }
 }
