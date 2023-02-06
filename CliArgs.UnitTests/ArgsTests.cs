@@ -1,4 +1,5 @@
 using Frognar.CliArgs;
+using Frognar.CliArgs.Enums;
 using Frognar.CliArgs.Exceptions;
 
 namespace CliArgs.UnitTests;
@@ -23,5 +24,7 @@ public class ArgsTests
     {
         ArgsException ex = Assert.Throws<ArgsException>(
             () => new Args("", new[] { "-x" }));
+        
+        Assert.Equal(ErrorCode.UnexpectedArgument, ex.ErrorCode);
     }
 }

@@ -1,3 +1,4 @@
+using Frognar.CliArgs.Enums;
 using Frognar.CliArgs.Exceptions;
 
 namespace Frognar.CliArgs;
@@ -9,6 +10,6 @@ public class Args
     public Args(string schema, string[] args)
     {
         if (args.Length > 0)
-            throw new ArgsException();
+            throw new ArgsException(ErrorCode.UnexpectedArgument);
     }
 }
