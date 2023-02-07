@@ -116,6 +116,16 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_InvalidInteger_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x#", new[] { "-x", "Forty two" }));
+        
+        Assert.Equal(ErrorCode.InvalidInteger, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+    }
+
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });

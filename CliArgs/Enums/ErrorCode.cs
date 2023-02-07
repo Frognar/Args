@@ -5,5 +5,6 @@ public enum ErrorCode
     UnexpectedArgument = 1,
     InvalidArgumentName,
     InvalidArgumentFormat,
-    MissingString
+    MissingString,
+    InvalidInteger
 }
