@@ -67,4 +67,13 @@ public class ArgsTests
         Assert.True(args.GetBoolean('x'));
         Assert.Equal(1, args.Count);
     }
+
+    [Fact]
+    public void Create_SimpleBoolPresetWithoutArguments_GetBooleanShouldReturnFalse()
+    {
+        Args args = new("x", Array.Empty<string>());
+        
+        Assert.False(args.GetBoolean('x'));
+        Assert.Equal(0, args.Count);
+    }
 }
