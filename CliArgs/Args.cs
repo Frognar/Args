@@ -22,8 +22,11 @@ public class Args
 
     void ParseSchema(string schema)
     {
-        if (schema.Length > 0)
-            ParseSchemaElement(schema);
+        string[] elements = schema.Split(',', 
+            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        
+        foreach (string element in elements)
+            ParseSchemaElement(element);
     }
 
     void ParseSchemaElement(string element)
@@ -59,7 +62,8 @@ public class Args
 
     void ParseArgumentString(string arg)
     {
-        ParseArgumentCharacter(arg[0]);
+        foreach (char c in arg)
+            ParseArgumentCharacter(c);
     }
 
     void ParseArgumentCharacter(char argId)

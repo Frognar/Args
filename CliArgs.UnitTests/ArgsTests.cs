@@ -94,6 +94,15 @@ public class ArgsTests
         
         Assert.Equal(ErrorCode.MissingString, ex.ErrorCode);
         Assert.Equal('x', ex.ErrorArgumentId);
+    }
+
+    [Fact]
+    public void Create_SchemaForMultipleArguments_ParseAllArgumentsFromSchema()
+    {
+        Args args = new("x,y,z*", new[] { "-xy", "-z", "param" });
         
+        Assert.True(args.GetBoolean('x'));
+        Assert.Equal("param", args.GetString('z'));
+        Assert.Equal(3, args.Count);
     }
 }
