@@ -10,6 +10,13 @@ public class Args
 
     public Args(string schema, string[] args)
     {
+        ParseSchema(schema);
+        if (schema.Length == 0 && args.Length > 0)
+            throw new ArgsException(ErrorCode.UnexpectedArgument, args[0][1]);
+    }
+
+    void ParseSchema(string schema)
+    {
         if (schema.Length > 0)
         {
             char elementId = schema[0];
@@ -20,8 +27,6 @@ public class Args
 
             argsMap[elementId] = true;
         }
-        else if (args.Length > 0)
-            throw new ArgsException(ErrorCode.UnexpectedArgument, args[0][1]);
     }
 
     static void ValidateSchemaElementId(char elementId)
