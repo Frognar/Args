@@ -9,7 +9,9 @@ public class IntegerArgumentMarshaler : ArgumentMarshaler
     
     public void Set(IEnumerator<string> currentArgument)
     {
-        currentArgument.MoveNext();
+        if (currentArgument.MoveNext() == false)
+            throw new ArgsException(ErrorCode.MissingInteger);
+        
         if (int.TryParse(currentArgument.Current, out value) == false)
             throw new ArgsException(ErrorCode.InvalidInteger);
     }

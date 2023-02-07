@@ -6,5 +6,6 @@ public enum ErrorCode
     InvalidArgumentName,
     InvalidArgumentFormat,
     MissingString,
-    InvalidInteger
+    InvalidInteger,
+    MissingInteger
 }
