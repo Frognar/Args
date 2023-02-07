@@ -35,7 +35,7 @@ public class Args
             argsMap[elementId] = "";
         else
             throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
-     }
+    }
 
     static void ValidateSchemaElementId(char elementId)
     {
@@ -48,20 +48,22 @@ public class Args
         for(int i = 0; i < argsList.Count; i++)
         {
             string arg = argsList[i];
-            if (arg.StartsWith("-"))
+            if (arg.StartsWith("-") == false)
+                break;
+            
+            if (argsMap.ContainsKey(arg[1]))
             {
-                if (argsMap.ContainsKey(arg[1]))
-                {
-                    argsFound.Add(arg[1]);
-                    if (argsMap[arg[1]] is bool)
-                        argsMap[arg[1]] = true;
-                    else
-                        argsMap[arg[1]] = argsList[++i];
-                }
+                argsFound.Add(arg[1]);
+                if (argsMap[arg[1]] is bool)
+                    argsMap[arg[1]] = true;
+                else if (i == argsList.Count - 1)
+                    throw new ArgsException(ErrorCode.MissingString, arg[1]);
                 else
-                {
-                    throw new ArgsException(ErrorCode.UnexpectedArgument, arg[1]);
-                }
+                    argsMap[arg[1]] = argsList[++i];
+            }
+            else
+            {
+                throw new ArgsException(ErrorCode.UnexpectedArgument, arg[1]);
             }
         }
     }

@@ -85,4 +85,15 @@ public class ArgsTests
         Assert.Equal("param", args.GetString('x'));
         Assert.Equal(1, args.Count);
     }
+
+    [Fact]
+    public void Create_MissingStringArgument_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x*", new[] { "-x" }));
+        
+        Assert.Equal(ErrorCode.MissingString, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+        
+    }
 }
