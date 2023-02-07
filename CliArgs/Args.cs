@@ -8,11 +8,10 @@ public class Args
     public int Count => argsMap.Keys.Count;
     readonly Dictionary<char, object> argsMap = new();
 
-    public Args(string schema, string[] args)
+    public Args(string schema, IEnumerable<string> args)
     {
         ParseSchema(schema);
-        if (schema.Length == 0 && args.Length > 0)
-            throw new ArgsException(ErrorCode.UnexpectedArgument, args[0][1]);
+        ParseArgumentStrings(args.ToList());
     }
 
     void ParseSchema(string schema)
@@ -36,6 +35,18 @@ public class Args
     {
         if (char.IsLetter(elementId) == false)
             throw new ArgsException(ErrorCode.InvalidArgumentName, elementId);
+    }
+
+    void ParseArgumentStrings(List<string> argsList)
+    {
+        foreach(string arg in argsList)
+        {
+            if (arg.StartsWith("-"))
+            {
+                if (argsMap.ContainsKey(arg[1]) == false)
+                    throw new ArgsException(ErrorCode.UnexpectedArgument, arg[1]);
+            }
+        }
     }
 
     public bool GetBoolean(char elementId)
