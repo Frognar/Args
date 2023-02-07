@@ -5,8 +5,9 @@ namespace Frognar.CliArgs;
 
 public class Args
 {
-    public int Count { get; }
-    
+    public int Count => argsMap.Keys.Count;
+    readonly Dictionary<char, object> argsMap = new();
+
     public Args(string schema, string[] args)
     {
         if (schema.Length > 0)
@@ -17,7 +18,7 @@ public class Args
             if (elementTail.Any())
                 throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
 
-            Count = 1;
+            argsMap[elementId] = true;
         }
         else if (args.Length > 0)
             throw new ArgsException(ErrorCode.UnexpectedArgument, args[0][1]);
