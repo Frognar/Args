@@ -53,19 +53,25 @@ public class Args
             if (arg.StartsWith("-") == false)
                 break;
 
-            if (argsMarshalers.ContainsKey(arg[1]) == false)
-                throw new ArgsException(ErrorCode.UnexpectedArgument, arg[1]);
+            ParseArgumentString(arg[1..]);
+        }
+    }
+
+    void ParseArgumentString(string arg)
+    {
+        char argId = arg[0];
+        if (argsMarshalers.ContainsKey(argId) == false)
+            throw new ArgsException(ErrorCode.UnexpectedArgument, argId);
             
-            argsFound.Add(arg[1]);
-            try
-            {
-                argsMarshalers[arg[1]].Set(currentArgument);
-            }
-            catch (ArgsException ex)
-            {
-                ex.SetErrorArgumentId(arg[1]);
-                throw;
-            }
+        argsFound.Add(argId);
+        try
+        {
+            argsMarshalers[argId].Set(currentArgument);
+        }
+        catch (ArgsException ex)
+        {
+            ex.SetErrorArgumentId(argId);
+            throw;
         }
     }
 
