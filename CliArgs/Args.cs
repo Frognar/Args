@@ -1,17 +1,18 @@
 using Frognar.CliArgs.Enums;
 using Frognar.CliArgs.Exceptions;
+using Frognar.CliArgs.Marshalers;
 
 namespace Frognar.CliArgs;
 
 public class Args
 {
     public int Count => argsFound.Count;
-    readonly IDictionary<char, object> argsMap;
+    readonly Dictionary<char, ArgumentMarshaler> argsMarshalers;
     readonly ISet<char> argsFound;
 
     public Args(string schema, IEnumerable<string> args)
     {
-        argsMap = new Dictionary<char, object>();
+        argsMarshalers = new Dictionary<char, ArgumentMarshaler>();
         argsFound = new HashSet<char>();
         
         ParseSchema(schema);
@@ -30,9 +31,9 @@ public class Args
         string elementTail = element[1..];
         ValidateSchemaElementId(elementId);
         if (elementTail.Length == 0)
-            argsMap[elementId] = false;
+            argsMarshalers[elementId] = new BooleanArgumentMarshaler();
         else if (elementTail.Equals("*"))
-            argsMap[elementId] = "";
+            argsMarshalers[elementId] = new StringArgumentMarshaler();
         else
             throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
     }
@@ -45,36 +46,35 @@ public class Args
 
     void ParseArgumentStrings(List<string> argsList)
     {
-        for(int i = 0; i < argsList.Count; i++)
+        for (var iter = argsList.GetEnumerator(); iter.MoveNext();)
         {
-            string arg = argsList[i];
+            string arg = iter.Current;
             if (arg.StartsWith("-") == false)
                 break;
-            
-            if (argsMap.ContainsKey(arg[1]))
-            {
-                argsFound.Add(arg[1]);
-                if (argsMap[arg[1]] is bool)
-                    argsMap[arg[1]] = true;
-                else if (i == argsList.Count - 1)
-                    throw new ArgsException(ErrorCode.MissingString, arg[1]);
-                else
-                    argsMap[arg[1]] = argsList[++i];
-            }
-            else
-            {
+
+            if (argsMarshalers.ContainsKey(arg[1]) == false)
                 throw new ArgsException(ErrorCode.UnexpectedArgument, arg[1]);
+            
+            argsFound.Add(arg[1]);
+            try
+            {
+                argsMarshalers[arg[1]].Set(iter);
+            }
+            catch (ArgsException ex)
+            {
+                ex.SetErrorArgumentId(arg[1]);
+                throw;
             }
         }
     }
 
     public bool GetBoolean(char elementId)
     {
-        return (bool)argsMap[elementId];
+        return BooleanArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
     }
 
     public string GetString(char elementId)
     {
-        return (string)argsMap[elementId];
+        return StringArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
     }
 }
