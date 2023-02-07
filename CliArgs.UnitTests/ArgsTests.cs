@@ -105,4 +105,20 @@ public class ArgsTests
         Assert.Equal("param", args.GetString('z'));
         Assert.Equal(3, args.Count);
     }
+
+    [Fact]
+    public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
+    {
+        Args args = new("x*", new[] { "-x", "param" });
+        
+        Assert.False(args.GetBoolean('x'));
+    }
+
+    [Fact]
+    public void GetString_ForNotStringArgument_ReturnsEmptyString()
+    {
+        Args args = new("x", new[] { "-x" });
+        
+        Assert.Empty(args.GetString('x'));
+    }
 }
