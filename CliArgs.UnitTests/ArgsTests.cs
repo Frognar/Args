@@ -150,4 +150,12 @@ public class ArgsTests
         
         Assert.Empty(args.GetString('x'));
     }
+
+    [Fact]
+    public void GetInteger_ForNotIntArgument_ReturnsZero()
+    {
+        Args args = new("x", new[] { "-x" });
+        
+        Assert.Equal(0, args.GetInteger('x'));
+    }
 }

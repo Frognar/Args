@@ -18,6 +18,9 @@ public class IntegerArgumentMarshaler : ArgumentMarshaler
 
     public static int GetValue(ArgumentMarshaler? am)
     {
-        return (am as IntegerArgumentMarshaler)!.value;
+        if (am is IntegerArgumentMarshaler iam)
+            return iam.value;
+
+        return 0;
     }
 }
