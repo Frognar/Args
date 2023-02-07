@@ -59,7 +59,11 @@ public class Args
 
     void ParseArgumentString(string arg)
     {
-        char argId = arg[0];
+        ParseArgumentCharacter(arg[0]);
+    }
+
+    void ParseArgumentCharacter(char argId)
+    {
         if (argsMarshalers.ContainsKey(argId) == false)
             throw new ArgsException(ErrorCode.UnexpectedArgument, argId);
             
