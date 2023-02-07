@@ -76,4 +76,13 @@ public class ArgsTests
         Assert.False(args.GetBoolean('x'));
         Assert.Equal(0, args.Count);
     }
+
+    [Fact]
+    public void Create_SimpleStringPreset_CanGetStringValue()
+    {
+        Args args = new("x*", new[] { "-x", "param" });
+        
+        Assert.Equal("param", args.GetString('x'));
+        Assert.Equal(1, args.Count);
+    }
 }

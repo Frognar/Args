@@ -31,9 +31,11 @@ public class Args
         ValidateSchemaElementId(elementId);
         if (elementTail.Length == 0)
             argsMap[elementId] = false;
+        else if (elementTail.Equals("*"))
+            argsMap[elementId] = "";
         else
             throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
-    }
+     }
 
     static void ValidateSchemaElementId(char elementId)
     {
@@ -43,14 +45,18 @@ public class Args
 
     void ParseArgumentStrings(List<string> argsList)
     {
-        foreach(string arg in argsList)
+        for(int i = 0; i < argsList.Count; i++)
         {
+            string arg = argsList[i];
             if (arg.StartsWith("-"))
             {
                 if (argsMap.ContainsKey(arg[1]))
                 {
-                    argsMap[arg[1]] = true;
                     argsFound.Add(arg[1]);
+                    if (argsMap[arg[1]] is bool)
+                        argsMap[arg[1]] = true;
+                    else
+                        argsMap[arg[1]] = argsList[++i];
                 }
                 else
                 {
@@ -63,5 +69,10 @@ public class Args
     public bool GetBoolean(char elementId)
     {
         return (bool)argsMap[elementId];
+    }
+
+    public string GetString(char elementId)
+    {
+        return (string)argsMap[elementId];
     }
 }
