@@ -60,7 +60,7 @@ public class ArgsTests
     }
 
     [Fact]
-    public void Create_SimpleBoolPreset_CanGetBoolValue()
+    public void Create_SimpleBoolPresent_CanGetBoolValue()
     {
         Args args = new("x", new[] { "-x" });
         
@@ -78,7 +78,7 @@ public class ArgsTests
     }
 
     [Fact]
-    public void Create_SimpleStringPreset_CanGetStringValue()
+    public void Create_SimpleStringPresent_CanGetStringValue()
     {
         Args args = new("x*", new[] { "-x", "param" });
         
@@ -104,6 +104,15 @@ public class ArgsTests
         Assert.True(args.GetBoolean('x'));
         Assert.Equal("param", args.GetString('z'));
         Assert.Equal(3, args.Count);
+    }
+
+    [Fact]
+    public void Create_SimpleIntPresent_CanGetIntValue()
+    {
+        Args args = new("x#", new[] { "-x", "42" });
+        
+        Assert.Equal(42, args.GetInteger('x'));
+        Assert.Equal(1, args.Count);
     }
 
     [Fact]
