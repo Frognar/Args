@@ -9,6 +9,7 @@ public class Args
     public int Count => argsFound.Count;
     readonly Dictionary<char, ArgumentMarshaler> argsMarshalers;
     readonly ISet<char> argsFound;
+    List<string>.Enumerator currentArgument;
 
     public Args(string schema, IEnumerable<string> args)
     {
@@ -46,9 +47,9 @@ public class Args
 
     void ParseArgumentStrings(List<string> argsList)
     {
-        for (var iter = argsList.GetEnumerator(); iter.MoveNext();)
+        for (currentArgument = argsList.GetEnumerator(); currentArgument.MoveNext();)
         {
-            string arg = iter.Current;
+            string arg = currentArgument.Current;
             if (arg.StartsWith("-") == false)
                 break;
 
@@ -58,7 +59,7 @@ public class Args
             argsFound.Add(arg[1]);
             try
             {
-                argsMarshalers[arg[1]].Set(iter);
+                argsMarshalers[arg[1]].Set(currentArgument);
             }
             catch (ArgsException ex)
             {
