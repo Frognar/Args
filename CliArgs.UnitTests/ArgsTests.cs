@@ -58,4 +58,13 @@ public class ArgsTests
         Assert.Equal(ErrorCode.InvalidArgumentFormat, ex.ErrorCode);
         Assert.Equal('f', ex.ErrorArgumentId);
     }
+
+    [Fact]
+    public void Create_SimpleBoolPreset_CanGetBoolValue()
+    {
+        Args args = new("x", new[] { "-x" });
+        
+        Assert.True(args.GetBoolean('x'));
+        Assert.Equal(1, args.Count);
+    }
 }
