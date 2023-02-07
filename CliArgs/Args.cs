@@ -1,15 +1,102 @@
 using Frognar.CliArgs.Enums;
 using Frognar.CliArgs.Exceptions;
+using Frognar.CliArgs.Marshalers;
 
 namespace Frognar.CliArgs;
 
 public class Args
 {
-    public int Count => 0;
-    
-    public Args(string schema, string[] args)
+    public int Count => argsFound.Count;
+    readonly Dictionary<char, ArgumentMarshaler> argsMarshalers;
+    readonly ISet<char> argsFound;
+    List<string>.Enumerator currentArgument;
+
+    public Args(string schema, IEnumerable<string> args)
     {
-        if (args.Length > 0)
-            throw new ArgsException(ErrorCode.UnexpectedArgument, args[0][1]);
+        argsMarshalers = new Dictionary<char, ArgumentMarshaler>();
+        argsFound = new HashSet<char>();
+        
+        ParseSchema(schema);
+        ParseArgumentStrings(args.ToList());
+    }
+
+    void ParseSchema(string schema)
+    {
+        string[] elements = schema.Split(',', 
+            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        
+        foreach (string element in elements)
+            ParseSchemaElement(element);
+    }
+
+    void ParseSchemaElement(string element)
+    {
+        char elementId = element[0];
+        string elementTail = element[1..];
+        ValidateSchemaElementId(elementId);
+        if (elementTail.Length == 0)
+            argsMarshalers[elementId] = new BooleanArgumentMarshaler();
+        else if (elementTail.Equals("*"))
+            argsMarshalers[elementId] = new StringArgumentMarshaler();
+        else if (elementTail.Equals("#"))
+            argsMarshalers[elementId] = new IntegerArgumentMarshaler();
+        else
+            throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
+    }
+
+    static void ValidateSchemaElementId(char elementId)
+    {
+        if (char.IsLetter(elementId) == false)
+            throw new ArgsException(ErrorCode.InvalidArgumentName, elementId);
+    }
+
+    void ParseArgumentStrings(List<string> argsList)
+    {
+        for (currentArgument = argsList.GetEnumerator(); currentArgument.MoveNext();)
+        {
+            string arg = currentArgument.Current;
+            if (arg.StartsWith("-") == false)
+                break;
+
+            ParseArgumentString(arg[1..]);
+        }
+    }
+
+    void ParseArgumentString(string arg)
+    {
+        foreach (char c in arg)
+            ParseArgumentCharacter(c);
+    }
+
+    void ParseArgumentCharacter(char argId)
+    {
+        if (argsMarshalers.ContainsKey(argId) == false)
+            throw new ArgsException(ErrorCode.UnexpectedArgument, argId);
+            
+        argsFound.Add(argId);
+        try
+        {
+            argsMarshalers[argId].Set(currentArgument);
+        }
+        catch (ArgsException ex)
+        {
+            ex.SetErrorArgumentId(argId);
+            throw;
+        }
+    }
+
+    public bool GetBoolean(char elementId)
+    {
+        return BooleanArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
+    }
+
+    public string GetString(char elementId)
+    {
+        return StringArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
+    }
+
+    public int GetInteger(char elementId)
+    {
+        return IntegerArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
     }
 }
