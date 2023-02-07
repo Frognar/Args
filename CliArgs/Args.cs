@@ -26,10 +26,10 @@ public class Args
         char elementId = element[0];
         string elementTail = element[1..];
         ValidateSchemaElementId(elementId);
-        if (elementTail.Any())
+        if (elementTail.Length == 0)
+            argsMap[elementId] = false;
+        else
             throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
-
-        argsMap[elementId] = true;
     }
 
     static void ValidateSchemaElementId(char elementId)
