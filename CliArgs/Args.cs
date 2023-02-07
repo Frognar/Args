@@ -18,15 +18,18 @@ public class Args
     void ParseSchema(string schema)
     {
         if (schema.Length > 0)
-        {
-            char elementId = schema[0];
-            string elementTail = schema[1..];
-            ValidateSchemaElementId(elementId);
-            if (elementTail.Any())
-                throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
+            ParseSchemaElement(schema);
+    }
 
-            argsMap[elementId] = true;
-        }
+    void ParseSchemaElement(string element)
+    {
+        char elementId = element[0];
+        string elementTail = element[1..];
+        ValidateSchemaElementId(elementId);
+        if (elementTail.Any())
+            throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
+
+        argsMap[elementId] = true;
     }
 
     static void ValidateSchemaElementId(char elementId)
