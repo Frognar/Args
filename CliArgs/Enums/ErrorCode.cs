@@ -8,5 +8,6 @@ public enum ErrorCode
     MissingString,
     InvalidInteger,
     MissingInteger,
-    InvalidDouble
+    InvalidDouble,
+    MissingDouble
 }

@@ -10,7 +10,9 @@ public class DoubleArgumentMarshaler : ArgumentMarshaler
     
     public void Set(IEnumerator<string> currentArgument)
     {
-        currentArgument.MoveNext();
+        if (currentArgument.MoveNext() == false)
+            throw new ArgsException(ErrorCode.MissingDouble);
+        
         if (double.TryParse(currentArgument.Current, CultureInfo.InvariantCulture, out value) == false)
             throw new ArgsException(ErrorCode.InvalidDouble);
     }
