@@ -9,7 +9,7 @@ public class Args
     public int Count => argsFound.Count;
     readonly Dictionary<char, ArgumentMarshaler> argsMarshalers;
     readonly ISet<char> argsFound;
-    List<string>.Enumerator currentArgument;
+    IEnumerator<string> currentArgument = default!;
 
     public Args(string schema, IEnumerable<string> args)
     {
@@ -40,6 +40,10 @@ public class Args
             argsMarshalers[elementId] = new StringArgumentMarshaler();
         else if (elementTail.Equals("#"))
             argsMarshalers[elementId] = new IntegerArgumentMarshaler();
+        else if (elementTail.Equals("##"))
+            argsMarshalers[elementId] = new DoubleArgumentMarshaler();
+        else if (elementTail.Equals("[*]"))
+            argsMarshalers[elementId] = new StringArrayArgumentMarshaler();
         else
             throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
     }
@@ -98,5 +102,15 @@ public class Args
     public int GetInteger(char elementId)
     {
         return IntegerArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
+    }
+
+    public double GetDouble(char elementId)
+    {
+        return DoubleArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
+    }
+
+    public string[] GetStringArray(char elementId)
+    {
+        return StringArrayArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
     }
 }

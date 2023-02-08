@@ -7,5 +7,7 @@ public enum ErrorCode
     InvalidArgumentFormat,
     MissingString,
     InvalidInteger,
-    MissingInteger
+    MissingInteger,
+    InvalidDouble,
+    MissingDouble
 }

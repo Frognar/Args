@@ -102,8 +102,19 @@ public class ArgsTests
         Args args = new("x,y,z*", new[] { "-xy", "-z", "param" });
         
         Assert.True(args.GetBoolean('x'));
+        Assert.True(args.GetBoolean('y'));
         Assert.Equal("param", args.GetString('z'));
         Assert.Equal(3, args.Count);
+    }
+
+    [Fact]
+    public void Create_WithSpacesInSchema_IgnoreSpaces()
+    {
+        Args args = new("x, y*", new[] { "-x", "-y", "param" });
+        
+        Assert.True(args.GetBoolean('x'));
+        Assert.Equal("param", args.GetString('y'));
+        Assert.Equal(2, args.Count);
     }
 
     [Fact]
@@ -136,6 +147,69 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_SimpleDoublePresent_CanGetDoubleValue()
+    {
+        Args args = new("x##", new[] { "-x", "42.2" });
+        
+        Assert.Equal(42.2, args.GetDouble('x'), .001);
+        Assert.Equal(1, args.Count);
+    }
+
+    [Fact]
+    public void Create_InvalidDouble_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x##", new[] { "-x", "Forty two" }));
+        
+        Assert.Equal(ErrorCode.InvalidDouble, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+    }
+
+    [Fact]
+    public void Create_MissingDouble_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x##", new[] { "-x" }));
+        
+        Assert.Equal(ErrorCode.MissingDouble, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+    }
+
+    [Fact]
+    public void Create_StringArray_CanGetStringArray()
+    {
+        Args args = new("x[*]", new[] { "-x", "param" });
+
+        string[] result = args.GetStringArray('x');
+        string first = Assert.Single(result);
+        Assert.Equal("param", first);
+        Assert.Equal(1, args.Count);
+    }
+
+    [Fact]
+    public void Create_MissingStringArrayElement_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x[*]", new[] { "-x" }));
+        
+        Assert.Equal(ErrorCode.MissingString, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+    }
+
+    [Fact]
+    public void Create_StringArrayWithMultipleElements_CanGetStringArray()
+    {
+        Args args = new("x[*]", new[] { "-x", "param 1", "-x", "param 2", "-x", "param 3" });
+
+        string[] result = args.GetStringArray('x');
+        Assert.Equal(3, result.Length);
+        Assert.Equal("param 1", result[0]);
+        Assert.Equal("param 2", result[1]);
+        Assert.Equal("param 3", result[2]);
+        Assert.Equal(1, args.Count);
+    }
+
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });
@@ -157,5 +231,21 @@ public class ArgsTests
         Args args = new("x", new[] { "-x" });
         
         Assert.Equal(0, args.GetInteger('x'));
+    }
+
+    [Fact]
+    public void GetDouble_ForNotDoubleArgument_ReturnsZero()
+    {
+        Args args = new("x", new[] { "-x" });
+        
+        Assert.Equal(0.0, args.GetDouble('x'), 0.001);
+    }
+
+    [Fact]
+    public void GetStringArray_ForNotStringArrayArgument_ReturnsEmptyArray()
+    {
+        Args args = new("x", new[] { "-x" });
+
+        Assert.Empty(args.GetStringArray('x'));        
     }
 }
