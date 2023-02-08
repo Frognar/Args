@@ -176,6 +176,17 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_StringArray_CanGetStringArray()
+    {
+        Args args = new("x[*]", new[] { "-x", "param" });
+
+        string[] result = args.GetStringArray('x');
+        string first = Assert.Single(result);
+        Assert.Equal("param", first);
+        Assert.Equal(1, args.Count);
+    }
+
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });
