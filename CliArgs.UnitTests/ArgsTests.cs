@@ -102,8 +102,19 @@ public class ArgsTests
         Args args = new("x,y,z*", new[] { "-xy", "-z", "param" });
         
         Assert.True(args.GetBoolean('x'));
+        Assert.True(args.GetBoolean('y'));
         Assert.Equal("param", args.GetString('z'));
         Assert.Equal(3, args.Count);
+    }
+
+    [Fact]
+    public void Create_WithSpacesInSchema_IgnoreSpaces()
+    {
+        Args args = new("x, y*", new[] { "-x", "-y", "param" });
+        
+        Assert.True(args.GetBoolean('x'));
+        Assert.Equal("param", args.GetString('y'));
+        Assert.Equal(2, args.Count);
     }
 
     [Fact]
