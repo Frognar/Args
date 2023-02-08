@@ -19,6 +19,9 @@ public class DoubleArgumentMarshaler : ArgumentMarshaler
 
     public static double GetValue(ArgumentMarshaler? am)
     {
-        return (am as DoubleArgumentMarshaler)!.value;
+        if (am is DoubleArgumentMarshaler dam)
+            return dam.value;
+
+        return 0.0;
     }
 }

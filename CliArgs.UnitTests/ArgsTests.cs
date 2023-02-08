@@ -198,4 +198,12 @@ public class ArgsTests
         
         Assert.Equal(0, args.GetInteger('x'));
     }
+
+    [Fact]
+    public void GetDouble_ForNotDoubleArgument_ReturnsZero()
+    {
+        Args args = new("x", new[] { "-x" });
+        
+        Assert.Equal(0.0, args.GetDouble('x'), 0.001);
+    }
 }
