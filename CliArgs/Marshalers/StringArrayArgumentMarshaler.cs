@@ -1,3 +1,6 @@
+using Frognar.CliArgs.Enums;
+using Frognar.CliArgs.Exceptions;
+
 namespace Frognar.CliArgs.Marshalers;
 
 public class StringArrayArgumentMarshaler : ArgumentMarshaler
@@ -6,8 +9,10 @@ public class StringArrayArgumentMarshaler : ArgumentMarshaler
     
     public void Set(IEnumerator<string> currentArgument)
     {
-        while(currentArgument.MoveNext())
-            values.Add(currentArgument.Current);
+        if (currentArgument.MoveNext() == false)
+            throw new ArgsException(ErrorCode.MissingString);
+        
+        values.Add(currentArgument.Current);
     }
 
     public static string[] GetValue(ArgumentMarshaler? am)
