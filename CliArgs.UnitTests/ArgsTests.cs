@@ -147,6 +147,15 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_SimpleDoublePresent_CanGetDoubleValue()
+    {
+        Args args = new("x##", new[] { "-x", "42.2" });
+        
+        Assert.Equal(42.2, args.GetDouble('x'), .001);
+        Assert.Equal(1, args.Count);
+    }
+
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });

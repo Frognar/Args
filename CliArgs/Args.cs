@@ -40,6 +40,8 @@ public class Args
             argsMarshalers[elementId] = new StringArgumentMarshaler();
         else if (elementTail.Equals("#"))
             argsMarshalers[elementId] = new IntegerArgumentMarshaler();
+        else if (elementTail.Equals("##"))
+            argsMarshalers[elementId] = new DoubleArgumentMarshaler();
         else
             throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
     }
@@ -98,5 +100,10 @@ public class Args
     public int GetInteger(char elementId)
     {
         return IntegerArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
+    }
+
+    public double GetDouble(char elementId)
+    {
+        return DoubleArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
     }
 }
