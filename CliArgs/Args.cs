@@ -9,7 +9,7 @@ public class Args
     public int Count => argsFound.Count;
     readonly Dictionary<char, ArgumentMarshaler> argsMarshalers;
     readonly ISet<char> argsFound;
-    List<string>.Enumerator currentArgument;
+    IEnumerator<string> currentArgument = default!;
 
     public Args(string schema, IEnumerable<string> args)
     {

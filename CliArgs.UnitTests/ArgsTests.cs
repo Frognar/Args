@@ -197,6 +197,19 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_StringArrayWithMultipleElements_CanGetStringArray()
+    {
+        Args args = new("x[*]", new[] { "-x", "param 1", "-x", "param 2", "-x", "param 3" });
+
+        string[] result = args.GetStringArray('x');
+        Assert.Equal(3, result.Length);
+        Assert.Equal("param 1", result[0]);
+        Assert.Equal("param 2", result[1]);
+        Assert.Equal("param 3", result[2]);
+        Assert.Equal(1, args.Count);
+    }
+
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });
