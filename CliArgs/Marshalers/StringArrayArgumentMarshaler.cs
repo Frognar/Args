@@ -17,6 +17,9 @@ public class StringArrayArgumentMarshaler : ArgumentMarshaler
 
     public static string[] GetValue(ArgumentMarshaler? am)
     {
-        return (am as StringArrayArgumentMarshaler)!.values.ToArray();
+        if (am is StringArrayArgumentMarshaler sam)
+            return sam.values.ToArray();
+        
+        return Array.Empty<string>();
     }
 }

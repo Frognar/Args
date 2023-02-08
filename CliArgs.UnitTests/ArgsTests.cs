@@ -240,4 +240,12 @@ public class ArgsTests
         
         Assert.Equal(0.0, args.GetDouble('x'), 0.001);
     }
+
+    [Fact]
+    public void GetStringArray_ForNotStringArrayArgument_ReturnsEmptyArray()
+    {
+        Args args = new("x", new[] { "-x" });
+
+        Assert.Empty(args.GetStringArray('x'));        
+    }
 }
