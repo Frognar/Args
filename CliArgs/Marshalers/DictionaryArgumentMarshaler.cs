@@ -1,3 +1,6 @@
+using Frognar.CliArgs.Enums;
+using Frognar.CliArgs.Exceptions;
+
 namespace Frognar.CliArgs.Marshalers;
 
 public class DictionaryArgumentMarshaler : ArgumentMarshaler
@@ -10,6 +13,9 @@ public class DictionaryArgumentMarshaler : ArgumentMarshaler
         foreach (string s in currentArgument.Current.Split(','))
         {
             string[] kv = s.Split(':');
+            if (kv.Length < 2)
+                throw new ArgsException(ErrorCode.MalformedEntry);
+            
             value[kv[0]] = kv[1];
         }
     }

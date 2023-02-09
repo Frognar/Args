@@ -221,6 +221,16 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_MalformedDictionaryEntry_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x&", new[] { "-x", "key1:val1,key2" }));
+        
+        Assert.Equal(ErrorCode.MalformedEntry, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+    }
+
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });
