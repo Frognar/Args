@@ -210,6 +210,17 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_DictionaryArgument_CanGetDictionary()
+    {
+        Args args = new("x&", new[] { "-x", "key1:val1,key2:val2" });
+
+        Dictionary<string, string> result = args.GetDictionary('x');
+        Assert.Equal(2, result.Count);
+        Assert.Equal("val1", result["key1"]);
+        Assert.Equal("val2", result["key2"]);
+    }
+
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });
