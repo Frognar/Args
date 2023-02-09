@@ -9,5 +9,7 @@ public enum ErrorCode
     InvalidInteger,
     MissingInteger,
     InvalidDouble,
-    MissingDouble
+    MissingDouble,
+    MalformedEntry,
+    MissingEntry
 }

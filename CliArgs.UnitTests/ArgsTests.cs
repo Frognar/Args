@@ -210,6 +210,37 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_DictionaryArgument_CanGetDictionary()
+    {
+        Args args = new("x&", new[] { "-x", "key1:val1,key2:val2" });
+
+        Dictionary<string, string> result = args.GetDictionary('x');
+        Assert.Equal(2, result.Count);
+        Assert.Equal("val1", result["key1"]);
+        Assert.Equal("val2", result["key2"]);
+    }
+
+    [Fact]
+    public void Create_MalformedDictionaryEntry_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x&", new[] { "-x", "key1:val1,key2" }));
+        
+        Assert.Equal(ErrorCode.MalformedEntry, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+    }
+
+    [Fact]
+    public void Create_MissingDictionaryEntry_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x&", new[] { "-x" }));
+        
+        Assert.Equal(ErrorCode.MissingEntry, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+    }
+    
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });
@@ -247,5 +278,33 @@ public class ArgsTests
         Args args = new("x", new[] { "-x" });
 
         Assert.Empty(args.GetStringArray('x'));        
+    }
+
+    [Fact]
+    public void GetDictionary_ForNotDictionaryArgument_ReturnsEmptyDictionary()
+    {
+        Args args = new("x", new[] { "-x" });
+
+        Assert.Empty(args.GetDictionary('x'));
+    }
+
+    [Fact]
+    public void Create_WithExtraArguments_IgnoreExtraArguments()
+    {
+        Args args = new("x,y*", new[] { "-x", "-y", "param", "extra" });
+        
+        Assert.Equal(2, args.Count);
+        Assert.True(args.GetBoolean('x'));
+        Assert.Equal("param", args.GetString('y'));
+    }
+
+    [Fact]
+    public void Create_WithExtraArgumentBetweenActualArguments_IgnoreExtraArguments()
+    {
+        Args args = new("x,y*", new[] { "-x", "extra", "-y", "param", "other extra" });
+        
+        Assert.Equal(2, args.Count);
+        Assert.True(args.GetBoolean('x'));
+        Assert.Equal("param", args.GetString('y'));
     }
 }

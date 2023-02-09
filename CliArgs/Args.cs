@@ -44,6 +44,8 @@ public class Args
             argsMarshalers[elementId] = new DoubleArgumentMarshaler();
         else if (elementTail.Equals("[*]"))
             argsMarshalers[elementId] = new StringArrayArgumentMarshaler();
+        else if (elementTail.Equals("&"))
+            argsMarshalers[elementId] = new DictionaryArgumentMarshaler();
         else
             throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
     }
@@ -60,7 +62,7 @@ public class Args
         {
             string arg = currentArgument.Current;
             if (arg.StartsWith("-") == false)
-                break;
+                continue;
 
             ParseArgumentString(arg[1..]);
         }
@@ -112,5 +114,10 @@ public class Args
     public string[] GetStringArray(char elementId)
     {
         return StringArrayArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
+    }
+
+    public Dictionary<string,string> GetDictionary(char elementId)
+    {
+        return DictionaryArgumentMarshaler.GetValue(argsMarshalers.GetValueOrDefault(elementId));
     }
 }
