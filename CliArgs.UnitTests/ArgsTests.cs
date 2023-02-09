@@ -287,4 +287,14 @@ public class ArgsTests
 
         Assert.Empty(args.GetDictionary('x'));
     }
+
+    [Fact]
+    public void Create_WithExtraArguments_IgnoreExtraArguments()
+    {
+        Args args = new("x,y*", new[] { "-x", "-y", "param", "extra" });
+        
+        Assert.Equal(2, args.Count);
+        Assert.True(args.GetBoolean('x'));
+        Assert.Equal("param", args.GetString('y'));
+    }
 }
