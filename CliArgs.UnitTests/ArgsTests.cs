@@ -297,4 +297,14 @@ public class ArgsTests
         Assert.True(args.GetBoolean('x'));
         Assert.Equal("param", args.GetString('y'));
     }
+
+    [Fact]
+    public void Create_WithExtraArgumentBetweenActualArguments_IgnoreExtraArguments()
+    {
+        Args args = new("x,y*", new[] { "-x", "extra", "-y", "param", "other extra" });
+        
+        Assert.Equal(2, args.Count);
+        Assert.True(args.GetBoolean('x'));
+        Assert.Equal("param", args.GetString('y'));
+    }
 }

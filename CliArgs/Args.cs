@@ -62,7 +62,7 @@ public class Args
         {
             string arg = currentArgument.Current;
             if (arg.StartsWith("-") == false)
-                break;
+                continue;
 
             ParseArgumentString(arg[1..]);
         }
