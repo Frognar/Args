@@ -10,5 +10,6 @@ public enum ErrorCode
     MissingInteger,
     InvalidDouble,
     MissingDouble,
-    MalformedEntry
+    MalformedEntry,
+    MissingEntry
 }

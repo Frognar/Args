@@ -231,6 +231,16 @@ public class ArgsTests
     }
 
     [Fact]
+    public void Create_MissingDictionaryEntry_ShouldThrowArgsException()
+    {
+        ArgsException ex = Assert.Throws<ArgsException>(
+            () => new Args("x&", new[] { "-x" }));
+        
+        Assert.Equal(ErrorCode.MissingEntry, ex.ErrorCode);
+        Assert.Equal('x', ex.ErrorArgumentId);
+    }
+    
+    [Fact]
     public void GetBoolean_ForNotBoolArgument_ReturnsFalse()
     {
         Args args = new("x*", new[] { "-x", "param" });

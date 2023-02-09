@@ -9,7 +9,9 @@ public class DictionaryArgumentMarshaler : ArgumentMarshaler
 
     public void Set(IEnumerator<string> currentArgument)
     {
-        currentArgument.MoveNext();
+        if (currentArgument.MoveNext() == false)
+            throw new ArgsException(ErrorCode.MissingEntry);
+        
         foreach (string s in currentArgument.Current.Split(','))
         {
             string[] kv = s.Split(':');
