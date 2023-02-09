@@ -5,7 +5,7 @@ namespace Frognar.CliArgs.Marshalers;
 
 public class DictionaryArgumentMarshaler : ArgumentMarshaler
 {
-    Dictionary<string, string> value = new();
+    readonly Dictionary<string, string> value = new();
 
     public void Set(IEnumerator<string> currentArgument)
     {
@@ -24,6 +24,9 @@ public class DictionaryArgumentMarshaler : ArgumentMarshaler
 
     public static Dictionary<string, string> GetValue(ArgumentMarshaler? am)
     {
-        return (am as DictionaryArgumentMarshaler)!.value;
+        if (am is DictionaryArgumentMarshaler dam)
+            return dam.value;
+        
+        return new Dictionary<string, string>();
     }
 }

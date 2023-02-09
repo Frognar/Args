@@ -279,4 +279,12 @@ public class ArgsTests
 
         Assert.Empty(args.GetStringArray('x'));        
     }
+
+    [Fact]
+    public void GetDictionary_ForNotDictionaryArgument_ReturnsEmptyDictionary()
+    {
+        Args args = new("x", new[] { "-x" });
+
+        Assert.Empty(args.GetDictionary('x'));
+    }
 }
