@@ -26,6 +26,7 @@ public class ArgsException : Exception
     public override string Message => ErrorCode switch
     {
         ErrorCode.UnexpectedArgument =>  $"Argument -{ErrorArgumentId} unexpected.",
+        ErrorCode.InvalidArgumentName => $"'{ErrorArgumentId}' is not a valid argument name.",
         _ => ""
     };
 }

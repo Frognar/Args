@@ -12,4 +12,12 @@ public class ArgsExceptionTests
         
         Assert.Equal("Argument -x unexpected.", ex.Message);
     }
+    
+    [Fact]
+    public void Message_InvalidArgumentName()
+    {
+        ArgsException ex = new(ErrorCode.InvalidArgumentName, '#');
+        
+        Assert.Equal("'#' is not a valid argument name.", ex.Message);
+    }
 }
