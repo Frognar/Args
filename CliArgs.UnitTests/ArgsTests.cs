@@ -165,6 +165,7 @@ public class ArgsTests
         
         Assert.Equal(ErrorCode.InvalidDouble, ex.ErrorCode);
         Assert.Equal('x', ex.ErrorArgumentId);
+        Assert.Equal("Forty two", ex.ErrorParameter);
     }
 
     [Fact]

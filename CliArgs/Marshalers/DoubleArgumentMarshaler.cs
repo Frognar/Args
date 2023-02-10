@@ -14,7 +14,7 @@ public class DoubleArgumentMarshaler : ArgumentMarshaler
             throw new ArgsException(ErrorCode.MissingDouble);
         
         if (double.TryParse(currentArgument.Current, CultureInfo.InvariantCulture, out value) == false)
-            throw new ArgsException(ErrorCode.InvalidDouble);
+            throw new ArgsException(ErrorCode.InvalidDouble, currentArgument.Current);
     }
 
     public static double GetValue(ArgumentMarshaler? am)
