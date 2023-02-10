@@ -6,6 +6,14 @@ public class ArgsException : Exception
 {
     public ErrorCode ErrorCode { get; }
     public char ErrorArgumentId { get; private set; }
+    public string? ErrorParameter { get; }
+    
+    public ArgsException(ErrorCode errorCode, char errorArgumentId, string errorParameter)
+    {
+        ErrorCode = errorCode;
+        ErrorArgumentId = errorArgumentId;
+        ErrorParameter = errorParameter;
+    }
     
     public ArgsException(ErrorCode errorCode, char errorArgumentId)
     {

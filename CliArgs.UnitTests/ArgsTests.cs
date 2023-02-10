@@ -57,6 +57,7 @@ public class ArgsTests
         
         Assert.Equal(ErrorCode.InvalidArgumentFormat, ex.ErrorCode);
         Assert.Equal('f', ex.ErrorArgumentId);
+        Assert.Equal("~", ex.ErrorParameter);
     }
 
     [Fact]
