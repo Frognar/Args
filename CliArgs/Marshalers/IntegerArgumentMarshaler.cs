@@ -13,7 +13,7 @@ public class IntegerArgumentMarshaler : ArgumentMarshaler
             throw new ArgsException(ErrorCode.MissingInteger);
         
         if (int.TryParse(currentArgument.Current, out value) == false)
-            throw new ArgsException(ErrorCode.InvalidInteger);
+            throw new ArgsException(ErrorCode.InvalidInteger, currentArgument.Current);
     }
 
     public static int GetValue(ArgumentMarshaler? am)

@@ -15,6 +15,12 @@ public class ArgsException : Exception
         ErrorParameter = errorParameter;
     }
     
+    public ArgsException(ErrorCode errorCode, string errorParameter)
+    {
+        ErrorCode = errorCode;
+        ErrorParameter = errorParameter;
+    }
+    
     public ArgsException(ErrorCode errorCode, char errorArgumentId)
     {
         ErrorCode = errorCode;
