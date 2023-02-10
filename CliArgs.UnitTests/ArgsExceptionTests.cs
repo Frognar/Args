@@ -52,4 +52,12 @@ public class ArgsExceptionTests
         
         Assert.Equal("Argument -x expects an integer but was 'Forty two'.", ex.Message);
     }
+    
+    [Fact]
+    public void Message_MissingInteger()
+    {
+        ArgsException ex = new(ErrorCode.MissingInteger, 'x');
+        
+        Assert.Equal("Could not find integer parameter for -x.", ex.Message);
+    }
 }

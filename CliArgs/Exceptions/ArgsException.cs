@@ -44,6 +44,7 @@ public class ArgsException : Exception
         ErrorCode.InvalidArgumentFormat => $"'{ErrorParameter}' is not a valid argument format.",
         ErrorCode.MissingString => $"Could not find string parameter for -{ErrorArgumentId}.",
         ErrorCode.InvalidInteger => $"Argument -{ErrorArgumentId} expects an integer but was '{ErrorParameter}'.",
+        ErrorCode.MissingInteger => $"Could not find integer parameter for -{ErrorArgumentId}.",
         _ => ""
     };
 }
