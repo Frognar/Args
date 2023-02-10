@@ -60,4 +60,12 @@ public class ArgsExceptionTests
         
         Assert.Equal("Could not find integer parameter for -x.", ex.Message);
     }
+    
+    [Fact]
+    public void Message_InvalidDouble()
+    {
+        ArgsException ex = new(ErrorCode.InvalidDouble, 'x', "Forty two");
+        
+        Assert.Equal("Argument -x expects an double but was 'Forty two'.", ex.Message);
+    }
 }
