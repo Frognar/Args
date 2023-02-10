@@ -44,4 +44,12 @@ public class ArgsExceptionTests
         
         Assert.Equal("Could not find string parameter for -x.", ex.Message);
     }
+    
+    [Fact]
+    public void Message_InvalidInteger()
+    {
+        ArgsException ex = new(ErrorCode.InvalidInteger, 'x', "Forty two");
+        
+        Assert.Equal("Argument -x expects an integer but was 'Forty two'.", ex.Message);
+    }
 }
