@@ -57,6 +57,7 @@ public class ArgsTests
         
         Assert.Equal(ErrorCode.InvalidArgumentFormat, ex.ErrorCode);
         Assert.Equal('f', ex.ErrorArgumentId);
+        Assert.Equal("~", ex.ErrorParameter);
     }
 
     [Fact]
@@ -134,6 +135,7 @@ public class ArgsTests
         
         Assert.Equal(ErrorCode.InvalidInteger, ex.ErrorCode);
         Assert.Equal('x', ex.ErrorArgumentId);
+        Assert.Equal("Forty two", ex.ErrorParameter);
     }
 
     [Fact]
@@ -163,6 +165,7 @@ public class ArgsTests
         
         Assert.Equal(ErrorCode.InvalidDouble, ex.ErrorCode);
         Assert.Equal('x', ex.ErrorArgumentId);
+        Assert.Equal("Forty two", ex.ErrorParameter);
     }
 
     [Fact]

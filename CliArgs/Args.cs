@@ -47,7 +47,7 @@ public class Args
         else if (elementTail.Equals("&"))
             argsMarshalers[elementId] = new DictionaryArgumentMarshaler();
         else
-            throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId);
+            throw new ArgsException(ErrorCode.InvalidArgumentFormat, elementId, elementTail);
     }
 
     static void ValidateSchemaElementId(char elementId)
