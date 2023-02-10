@@ -22,4 +22,10 @@ public class ArgsException : Exception
     {
         ErrorArgumentId = elementId;
     }
+
+    public override string Message => ErrorCode switch
+    {
+        ErrorCode.UnexpectedArgument =>  $"Argument -{ErrorArgumentId} unexpected.",
+        _ => ""
+    };
 }
