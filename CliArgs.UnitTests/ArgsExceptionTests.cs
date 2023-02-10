@@ -6,6 +6,14 @@ namespace CliArgs.UnitTests;
 public class ArgsExceptionTests
 {
     [Fact]
+    public void Message_UnknownErrorCode_EmptyMessage()
+    {
+        ArgsException ex = new((ErrorCode)(-1));
+        
+        Assert.Empty(ex.Message);
+    }
+    
+    [Fact]
     public void Message_UnexpectedArgument()
     {
         ArgsException ex = new(ErrorCode.UnexpectedArgument, 'x');
