@@ -36,4 +36,12 @@ public class ArgsExceptionTests
         
         Assert.Equal("'$' is not a valid argument format.", ex.Message);
     }
+    
+    [Fact]
+    public void Message_MissingString()
+    {
+        ArgsException ex = new(ErrorCode.MissingString, 'x');
+        
+        Assert.Equal("Could not find string parameter for -x.", ex.Message);
+    }
 }
