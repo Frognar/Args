@@ -35,6 +35,7 @@ public class ArgsException : Exception
     {
         ErrorCode.UnexpectedArgument =>  $"Argument -{ErrorArgumentId} unexpected.",
         ErrorCode.InvalidArgumentName => $"'{ErrorArgumentId}' is not a valid argument name.",
+        ErrorCode.InvalidArgumentFormat => $"'{ErrorParameter}' is not a valid argument format.",
         _ => ""
     };
 }

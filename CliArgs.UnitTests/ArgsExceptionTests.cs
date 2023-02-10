@@ -20,4 +20,12 @@ public class ArgsExceptionTests
         
         Assert.Equal("'#' is not a valid argument name.", ex.Message);
     }
+    
+    [Fact]
+    public void Message_InvalidArgumentFormat()
+    {
+        ArgsException ex = new(ErrorCode.InvalidArgumentFormat, 'x', "$");
+        
+        Assert.Equal("'$' is not a valid argument format.", ex.Message);
+    }
 }
