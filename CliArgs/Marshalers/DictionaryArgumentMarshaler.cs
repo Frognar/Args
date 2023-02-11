@@ -16,7 +16,7 @@ public class DictionaryArgumentMarshaler : ArgumentMarshaler
         {
             string[] kv = s.Split(':');
             if (kv.Length < 2)
-                throw new ArgsException(ErrorCode.MalformedEntry);
+                throw new ArgsException(ErrorCode.MalformedEntry, s);
             
             value[kv[0]] = kv[1];
         }

@@ -231,6 +231,7 @@ public class ArgsTests
         
         Assert.Equal(ErrorCode.MalformedEntry, ex.ErrorCode);
         Assert.Equal('x', ex.ErrorArgumentId);
+        Assert.Equal("key2", ex.ErrorParameter);
     }
 
     [Fact]

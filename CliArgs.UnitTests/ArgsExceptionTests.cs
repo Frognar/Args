@@ -68,4 +68,28 @@ public class ArgsExceptionTests
         
         Assert.Equal("Argument -x expects an double but was 'Forty two'.", ex.Message);
     }
+    
+    [Fact]
+    public void Message_MissingDouble()
+    {
+        ArgsException ex = new(ErrorCode.MissingDouble, 'x');
+        
+        Assert.Equal("Could not find double parameter for -x.", ex.Message);
+    }
+    
+    [Fact]
+    public void Message_MalformedEntry()
+    {
+        ArgsException ex = new(ErrorCode.MalformedEntry, 'x', "key2");
+        
+        Assert.Equal("'key2' is not valid dictionary entry parameter for -x.", ex.Message);
+    }
+    
+    [Fact]
+    public void Message_MissingEntry()
+    {
+        ArgsException ex = new(ErrorCode.MissingEntry, 'x');
+        
+        Assert.Equal("Could not find dictionary entry parameter for -x.", ex.Message);
+    }
 }
