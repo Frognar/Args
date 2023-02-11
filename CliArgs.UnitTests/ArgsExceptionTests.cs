@@ -68,4 +68,12 @@ public class ArgsExceptionTests
         
         Assert.Equal("Argument -x expects an double but was 'Forty two'.", ex.Message);
     }
+    
+    [Fact]
+    public void Message_MissingDouble()
+    {
+        ArgsException ex = new(ErrorCode.MissingDouble, 'x');
+        
+        Assert.Equal("Could not find double parameter for -x.", ex.Message);
+    }
 }

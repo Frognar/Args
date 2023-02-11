@@ -46,6 +46,7 @@ public class ArgsException : Exception
         ErrorCode.InvalidInteger => $"Argument -{ErrorArgumentId} expects an integer but was '{ErrorParameter}'.",
         ErrorCode.MissingInteger => $"Could not find integer parameter for -{ErrorArgumentId}.",
         ErrorCode.InvalidDouble => $"Argument -{ErrorArgumentId} expects an double but was '{ErrorParameter}'.",
+        ErrorCode.MissingDouble => $"Could not find double parameter for -{ErrorArgumentId}.",
         _ => ""
     };
 }
