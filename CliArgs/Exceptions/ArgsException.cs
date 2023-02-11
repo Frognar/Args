@@ -47,6 +47,7 @@ public class ArgsException : Exception
         ErrorCode.MissingInteger => $"Could not find integer parameter for -{ErrorArgumentId}.",
         ErrorCode.InvalidDouble => $"Argument -{ErrorArgumentId} expects an double but was '{ErrorParameter}'.",
         ErrorCode.MissingDouble => $"Could not find double parameter for -{ErrorArgumentId}.",
+        ErrorCode.MalformedEntry => $"'{ErrorParameter}' is not valid dictionary entry parameter for -{ErrorArgumentId}.",
         _ => ""
     };
 }
